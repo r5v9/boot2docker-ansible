@@ -59,9 +59,6 @@
     - name: Start boot2docker
       command: boot2docker up
 
-    - name: Fetch jpetazzo/nsenter
-      command: docker pull jpetazzo/nsenter
-
     - name: Create {{ utils_bin_folder }} directory
       file: path={{ utils_bin_folder }} state=directory
 

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 ids=$(docker ps -a | grep " Up " | grep -v CONTAINER | awk '{print $1}')
 
@@ -9,4 +9,3 @@ for id in $ids; do
 done
 
 eval $cmd
-
