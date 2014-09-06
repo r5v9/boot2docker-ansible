@@ -1,0 +1,7 @@
+#!/bin/sh
+
+ids=$(docker ps -a | grep -v " Up " | grep -v CONTAINER | awk '{print $1}')
+
+if [ "$ids" != "" ];then
+  docker rm $ids
+fi

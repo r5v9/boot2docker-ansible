@@ -1,0 +1,71 @@
+---
+- name: boot2docker
+  hosts: self
+  user: "{{ lookup('env', 'USER') }}"
+  connection: local
+
+  vars:
+    - app_name: boot2docker
+    - downloads: ~/Downloads
+    - boot2docker_version: 1.2.0
+    - virtualbox_version: 4.3.14
+    - pkg_file: Boot2Docker-{{ boot2docker_version }}.pkg
+    - iso_file: boot2docker-v{{ boot2docker_version }}-virtualbox-guest-additions-v{{ virtualbox_version }}.iso
+    - app_url: "https://github.com/boot2docker/osx-installer/releases/download/v{{ boot2docker_version }}/{{ pkg_file }}"
+    - iso_url: "http://static.dockerfiles.io/{{ iso_file }}"
+    - install_target: /Volumes/Macintosh\ HDD
+    - creates: /Applications/boot2docker.app
+    - utils_bin_folder: ~/bin
+    - boot2docker_folder: ~/.boot2docker
+
+  tasks:
+    - name: Remove boot2docker and VirtualBox apps
+      command: "sudo rm -rf {{item}}"
+      with_items:
+        - /Applications/boot2docker.app
+        - /Applications/VirtualBox.app
+
+    - name: Remove boot2docker and VirtualBox user files
+      command: "rm -rf {{item}}"
+      with_items:
+        - ~/Library/VirtualBox
+        - ~/.boot2docker
+        - ~/VirtualBox\ VMs/boot2docker-vm
+
+    - name: Create downloads directory
+      file: path={{ downloads }} state=directory
+
+    - name: Download boot2docker pkg file
+      get_url: url={{ app_url }} dest={{ downloads }}/{{ pkg_file }}
+
+    - name: Install {{ app_name }} pkg
+      command: sudo installer -package {{ downloads }}/{{ pkg_file }} -target {{ install_target }} creates={{ creates }}
+
+    - name: Create {{ boot2docker_folder }} directory
+      file: path={{ boot2docker_folder }} state=directory
+
+    - name: Download iso with guest additions
+      get_url: url={{ iso_url }} dest={{ downloads }}/{{ iso_file }}
+
+    - name: Copy iso to {{ boot2docker_folder }}
+      copy: src={{ downloads }}/{{ iso_file }} dest={{ boot2docker_folder }}/boot2docker.iso
+
+    - name: Initialize boot2docker
+      command: boot2docker init
+
+    - name: Mount /Users to boot2docker-vm
+      command: VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users
+
+    - name: Start boot2docker
+      command: boot2docker up
+
+    - name: Fetch jpetazzo/nsenter
+      command: docker pull jpetazzo/nsenter
+
+    - name: Create {{ utils_bin_folder }} directory
+      file: path={{ utils_bin_folder }} state=directory
+
+    - name: Copy utils to {{ utils_bin_folder }}
+      copy: src={{ item }} dest={{ utils_bin_folder }} mode=777
+      with_fileglob:
+        - utils/*

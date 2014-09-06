@@ -1,0 +1,11 @@
+#!/bin/sh
+
+docker_ip=$(boot2docker ip 2> /dev/null)
+
+if egrep -q "192.+docker" /etc/hosts; then
+  sudo sed -i "" "s/^192.*docker$/$docker_ip docker/" /etc/hosts
+else
+  echo "\n# added by docker-set\n$docker_ip docker" | sudo tee -a /etc/hosts > /dev/null
+fi
+
+export DOCKER_HOST=tcp://$docker_ip:2375
