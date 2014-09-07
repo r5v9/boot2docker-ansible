@@ -13,6 +13,7 @@
     - iso_file: boot2docker-v{{ boot2docker_version }}-virtualbox-guest-additions-v{{ virtualbox_version }}.iso
     - app_url: "https://github.com/boot2docker/osx-installer/releases/download/v{{ boot2docker_version }}/{{ pkg_file }}"
     - iso_url: "http://static.dockerfiles.io/{{ iso_file }}"
+    - dockviz_url: "http://gobuild.io/github.com/justone/dockviz/master/darwin/amd64"
     - install_target: /Volumes/Macintosh\ HDD
     - creates: /Applications/boot2docker.app
     - utils_bin_folder: ~/bin
@@ -66,3 +67,9 @@
       copy: src={{ item }} dest={{ utils_bin_folder }} mode=777
       with_fileglob:
         - utils/*
+
+    - name: Download dockviz
+      get_url: url={{ dockviz_url }} dest={{ downloads }}/dockviz.zip
+
+    - name: Extract dockviz
+      shell: unzip -p {{ downloads }}/dockviz.zip dockviz > {{ utils_bin_folder }}/_dockviz && chmod a+x {{ utils_bin_folder }}/_dockviz

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+docker_ip=$(boot2docker ip 2> /dev/null)
+
+curl -s http://$docker_ip:2375/images/json\?all\=1 | _dockviz images --tree
+curl -s http://$docker_ip:2375/images/json\?all\=1 | _dockviz images --dot | dot -Tpng | open -f -a /Applications/Preview.app
