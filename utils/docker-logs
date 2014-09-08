@@ -5,7 +5,7 @@ ids=$(docker ps -a | grep " Up " | grep -v CONTAINER | awk '{print $1}')
 cmd="multitail -C"
 for id in $ids; do
   name=$(docker ps -a | grep $id | awk '{print $2}' | sed 's/\(.*\):.*/\1/')
-  cmd=$cmd" -t $name -l 'docker logs --follow=true --tail=all $id'"
+  cmd=$cmd" -t $name:$id -l 'docker logs --follow=true --tail=all $id'"
 done
 
 eval $cmd
