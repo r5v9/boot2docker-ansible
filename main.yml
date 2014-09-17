@@ -57,6 +57,9 @@
     - name: Mount /Users to boot2docker-vm
       command: VBoxManage sharedfolder add boot2docker-vm -name home -hostpath /Users
 
+    - name: Increase VM memory to 8G
+      command: VBoxManage modifyvm "boot2docker-vm" --memory 8192
+
     - name: Start boot2docker
       command: boot2docker up
 

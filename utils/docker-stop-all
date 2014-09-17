@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Stopping all running containers..."
+docker stop $(docker ps -a | grep " Up " | grep -v CONTAINER | awk '{print $1}')
+echo "Removing stopped containers..."
+docker-clean

@@ -1,11 +1,13 @@
 #!/bin/bash
 
 ids=$(docker ps -a | grep " Up " | grep -v CONTAINER | awk '{print $1}')
+number_ids=$(echo $ids | wc -w)
+cols=$(($number_ids / 5 + 1))
 
-cmd="multitail -C"
+cmd="multitail -C -s $cols"
 for id in $ids; do
-  name=$(docker ps -a | grep $id | awk '{print $2}' | sed 's/\(.*\):.*/\1/')
-  cmd=$cmd" -t $name:$id -l 'docker logs --follow=true --tail=all $id'"
+  name=$(docker inspect $id | jq -r ".[0].Name" | colrm 1 1)
+  cmd=$cmd" -t '$name $id' -l 'docker logs --follow=true --tail=all $id'"
 done
 
 eval $cmd
