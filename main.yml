@@ -14,7 +14,7 @@
     - app_url: "https://github.com/boot2docker/osx-installer/releases/download/v{{ boot2docker_version }}/{{ pkg_file }}"
     - iso_url: "http://static.dockerfiles.io/{{ iso_file }}"
     - dockviz_url: "http://gobuild.io/github.com/justone/dockviz/master/darwin/amd64"
-    - install_target: /Volumes/Macintosh\ HDD
+    - install_target: /Volumes/Macintosh\ HD
     - creates: /Applications/boot2docker.app
     - utils_bin_folder: ~/bin
     - boot2docker_folder: ~/.boot2docker
