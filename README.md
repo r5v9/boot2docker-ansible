@@ -1,0 +1,1 @@
+run `boot2docker ssh`
