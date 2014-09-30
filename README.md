@@ -1,1 +1,1 @@
-run `boot2docker ssh`
+run `boot2docker up` then `boot2docker ssh`
