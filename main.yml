@@ -29,9 +29,7 @@
     - name: Remove boot2docker and VirtualBox user files
       command: "rm -rf {{item}}"
       with_items:
-        - ~/Library/VirtualBox
         - ~/.boot2docker
-        - ~/VirtualBox\ VMs/boot2docker-vm
 
     - name: Create downloads directory
       file: path={{ downloads }} state=directory
@@ -59,6 +57,9 @@
 
     - name: Increase VM memory to 8G
       command: VBoxManage modifyvm "boot2docker-vm" --memory 8192
+
+    - name: Enable symlinks on shared folder /Users
+      command: VBoxManage setextradata boot2docker-vm VBoxInternal2/SharedFoldersEnableSymlinksCreate/home 1
 
     - name: Start boot2docker
       command: boot2docker up
