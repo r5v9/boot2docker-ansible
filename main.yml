@@ -7,12 +7,11 @@
   vars:
     - app_name: boot2docker
     - downloads: ~/Downloads
-    - boot2docker_version: 1.2.0
-    - virtualbox_version: 4.3.14
+    - boot2docker_version: 1.3.0
     - pkg_file: Boot2Docker-{{ boot2docker_version }}.pkg
-    - iso_file: boot2docker-v{{ boot2docker_version }}-virtualbox-guest-additions-v{{ virtualbox_version }}.iso
+    - iso_file: boot2docker-v{{ boot2docker_version }}
     - app_url: "https://github.com/boot2docker/osx-installer/releases/download/v{{ boot2docker_version }}/{{ pkg_file }}"
-    - iso_url: "http://static.dockerfiles.io/{{ iso_file }}"
+    - iso_url: "https://github.com/boot2docker/boot2docker/releases/download/v{{ boot2docker_version }}/boot2docker.iso"
     - dockviz_url: "http://gobuild.io/github.com/justone/dockviz/master/darwin/amd64"
     - install_target: /Volumes/Macintosh\ HDD
     - creates: /Applications/boot2docker.app
